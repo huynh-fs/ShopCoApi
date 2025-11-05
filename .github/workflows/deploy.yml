@@ -45,7 +45,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./ShopCoApi
+          context: .
           # Quan tr?ng: Ch? ??nh ??ng ???ng d?n ??n Dockerfile c?a b?n
           file: ./ShopCoApi/Dockerfile 
           push: true

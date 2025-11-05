@@ -3,15 +3,17 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# V? build context ?? l? 'ShopCoApi', c?c file n?y n?m ngay ? th? m?c g?c c?a context.
-COPY ["ShopCoApi.csproj", "."]
+# Copy c?c file project. ???ng d?n ???c t?nh t? th? m?c g?c c?a repo (build context).
+COPY ["ShopCoApi/ShopCoApi.csproj", "ShopCoApi/"]
 
-# Ch?y restore
-RUN dotnet restore "./ShopCoApi.csproj"
+# Ch?y restore cho project c? th?
+RUN dotnet restore "ShopCoApi/ShopCoApi.csproj"
 
-# Copy to?n b? m? ngu?n (t? context 'ShopCoApi') v?o th? m?c /src trong image
+# Copy to?n b? m? ngu?n c?n l?i
 COPY . .
-WORKDIR "/src/"
+
+# ??t th? m?c l?m vi?c l? th? m?c c?a project API
+WORKDIR "/src/ShopCoApi"
 RUN dotnet build "ShopCoApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Giai ?o?n 2: Publish ?ng d?ng
