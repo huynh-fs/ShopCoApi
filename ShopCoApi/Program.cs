@@ -35,6 +35,7 @@ if (!string.IsNullOrEmpty(connectionString) && Uri.TryCreate(connectionString, U
     var userInfo = uri.UserInfo.Split(':');
     var user = userInfo[0];
     var password = userInfo[1];
+    var port = uri.Port > 0 ? uri.Port : 5432;
 
     // Xây dựng lại chuỗi kết nối theo định dạng Key=Value
     connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.LocalPath.TrimStart('/')};Username={user};Password={password};SSL Mode=Prefer;Trust Server Certificate=true;";
