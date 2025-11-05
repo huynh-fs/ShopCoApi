@@ -1,0 +1,32 @@
+﻿version: '3.8'
+
+services:
+  shopcoapi:
+    image: ${DOCKER_REGISTRY-}shopcoapi
+    build:
+      context: .
+      dockerfile: ShopCoApi/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      # ... (các biến môi trường giữ nguyên) ...
+      - ConnectionStrings__DefaultConnection=Server=db;Database=ShopCoDb_Docker;User Id=sa;Password=Your_password123;TrustServerCertificate=True
+      # ...
+    depends_on:
+      - db # Chỉ cần đảm bảo 'db' được khởi động trước
+
+  db:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    environment:
+      - SA_PASSWORD=Your_password123
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    # Xóa toàn bộ khối 'healthcheck' ở đây
+    volumes:
+      - db_data:/var/opt/mssql
+
+volumes:
+  db_data:
+    driver: local
