@@ -27,6 +27,25 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (!string.IsNullOrEmpty(connectionString) && Uri.TryCreate(connectionString, UriKind.Absolute, out var uri) && (uri.Scheme == "postgres" || uri.Scheme == "postgresql"))
+{
+    Log.Information("--- Detected URI format. Converting to standard format...");
+    var userInfo = uri.UserInfo.Split(':');
+    var user = userInfo[0];
+    var password = userInfo[1];
+
+    // Xây dựng lại chuỗi kết nối theo định dạng Key=Value
+    connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.LocalPath.TrimStart('/')};Username={user};Password={password};SSL Mode=Prefer;Trust Server Certificate=true;";
+
+    Log.Information("--- Converted Connection String: Host={Host};Port={Port};Database={Database};Username={Username}", uri.Host, uri.Port, uri.LocalPath.TrimStart('/'), user);
+}
+else
+{
+    Log.Information("--- Standard format detected. Using as is.");
+}
+
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -43,7 +62,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     //    }
     //));
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
+        connectionString,
         // Thêm cấu hình cho Split Queries
         o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
     ));
