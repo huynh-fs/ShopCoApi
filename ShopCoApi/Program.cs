@@ -38,7 +38,7 @@ if (!string.IsNullOrEmpty(connectionString) && Uri.TryCreate(connectionString, U
     var port = uri.Port > 0 ? uri.Port : 5432;
 
     // Xây dựng lại chuỗi kết nối theo định dạng Key=Value
-    connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.LocalPath.TrimStart('/')};Username={user};Password={password};SSL Mode=Prefer;Trust Server Certificate=true;";
+    connectionString = $"Host={uri.Host};Port={port};Database={uri.LocalPath.TrimStart('/')};Username={user};Password={password};SSL Mode=Prefer;Trust Server Certificate=true;";
 
     Log.Information("--- Converted Connection String: Host={Host};Port={Port};Database={Database};Username={Username}", uri.Host, uri.Port, uri.LocalPath.TrimStart('/'), user);
 }
