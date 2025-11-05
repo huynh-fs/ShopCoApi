@@ -12,7 +12,7 @@ using ShopCoApi.Data;
 namespace ShopCoApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251105044527_InitialSchemaForPostgres")]
+    [Migration("20251105072626_InitialSchemaForPostgres")]
     partial class InitialSchemaForPostgres
     {
         /// <inheritdoc />
@@ -702,7 +702,7 @@ namespace ShopCoApi.Migrations
                             Id = 1,
                             AuthorName = "Samantha D.",
                             Comment = "I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable.",
-                            PostedDate = new DateTime(2023, 8, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PostedDate = new DateTime(2023, 8, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             ProductId = 1,
                             Rating = 4.5
                         },
@@ -711,7 +711,7 @@ namespace ShopCoApi.Migrations
                             Id = 2,
                             AuthorName = "Alex M.",
                             Comment = "The quality is top-notch. It's become my favorite go-to shirt.",
-                            PostedDate = new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PostedDate = new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             ProductId = 1,
                             Rating = 5.0
                         },
@@ -720,7 +720,7 @@ namespace ShopCoApi.Migrations
                             Id = 3,
                             AuthorName = "Ethan R.",
                             Comment = "These jeans fit perfectly. The stretch material is very comfortable for all-day wear.",
-                            PostedDate = new DateTime(2023, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PostedDate = new DateTime(2023, 8, 16, 0, 0, 0, 0, DateTimeKind.Utc),
                             ProductId = 2,
                             Rating = 4.0
                         });

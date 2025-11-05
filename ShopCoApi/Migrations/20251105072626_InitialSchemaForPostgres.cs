@@ -475,9 +475,9 @@ namespace ShopCoApi.Migrations
                 columns: new[] { "Id", "AuthorName", "Comment", "PostedDate", "ProductId", "Rating" },
                 values: new object[,]
                 {
-                    { 1, "Samantha D.", "I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable.", new DateTime(2023, 8, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 4.5 },
-                    { 2, "Alex M.", "The quality is top-notch. It's become my favorite go-to shirt.", new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 5.0 },
-                    { 3, "Ethan R.", "These jeans fit perfectly. The stretch material is very comfortable for all-day wear.", new DateTime(2023, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 4.0 }
+                    { 1, "Samantha D.", "I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable.", new DateTime(2023, 8, 14, 0, 0, 0, 0, DateTimeKind.Utc), 1, 4.5 },
+                    { 2, "Alex M.", "The quality is top-notch. It's become my favorite go-to shirt.", new DateTime(2023, 8, 15, 0, 0, 0, 0, DateTimeKind.Utc), 1, 5.0 },
+                    { 3, "Ethan R.", "These jeans fit perfectly. The stretch material is very comfortable for all-day wear.", new DateTime(2023, 8, 16, 0, 0, 0, 0, DateTimeKind.Utc), 2, 4.0 }
                 });
 
             migrationBuilder.CreateIndex(
