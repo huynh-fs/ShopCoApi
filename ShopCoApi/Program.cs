@@ -29,18 +29,23 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlServerOptionsAction: sqlOptions =>
-        {
-            // Bật cơ chế retry
-            sqlOptions.EnableRetryOnFailure(
-                maxRetryCount: 5, // Thử lại tối đa 5 lần
-                maxRetryDelay: TimeSpan.FromSeconds(30), // Thời gian chờ tối đa giữa các lần thử
-                errorNumbersToAdd: null);
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+    //    sqlServerOptionsAction: sqlOptions =>
+    //    {
+    //        // Bật cơ chế retry
+    //        sqlOptions.EnableRetryOnFailure(
+    //            maxRetryCount: 5, // Thử lại tối đa 5 lần
+    //            maxRetryDelay: TimeSpan.FromSeconds(30), // Thời gian chờ tối đa giữa các lần thử
+    //            errorNumbersToAdd: null);
 
-            // Giữ lại cấu hình Split Query
-            sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-        }
+    //        // Giữ lại cấu hình Split Query
+    //        sqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+    //    }
+    //));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        // Thêm cấu hình cho Split Queries
+        o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)
     ));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
