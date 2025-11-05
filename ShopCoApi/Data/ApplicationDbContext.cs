@@ -122,7 +122,7 @@ namespace ShopCoApi.Data
                     AuthorName = "Samantha D.",
                     Rating = 4.5,
                     Comment = "I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable.",
-                    PostedDate = new DateTime(2023, 8, 14),
+                    PostedDate = new DateTime(2023, 8, 14, 0, 0, 0, DateTimeKind.Utc),
                     ProductId = 1
                 },
                 new Review
@@ -131,7 +131,7 @@ namespace ShopCoApi.Data
                     AuthorName = "Alex M.",
                     Rating = 5,
                     Comment = "The quality is top-notch. It's become my favorite go-to shirt.",
-                    PostedDate = new DateTime(2023, 8, 15),
+                    PostedDate = new DateTime(2023, 8, 15, 0, 0, 0, DateTimeKind.Utc),
                     ProductId = 1
                 },
                 new Review
@@ -140,7 +140,7 @@ namespace ShopCoApi.Data
                     AuthorName = "Ethan R.",
                     Rating = 4,
                     Comment = "These jeans fit perfectly. The stretch material is very comfortable for all-day wear.",
-                    PostedDate = new DateTime(2023, 8, 16),
+                    PostedDate = new DateTime(2023, 8, 16, 0, 0, 0, DateTimeKind.Utc),
                     ProductId = 2
                 }
             );
