@@ -3,21 +3,15 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Copy file .sln (n?u c?) v? c?c file .csproj
-# ?i?u n?y gi?p t?i ?u h?a Docker layer caching
-COPY ["ShopCoApi.sln", "."]
-COPY ["ShopCoApi/ShopCoApi.csproj", "ShopCoApi/"]
-# N?u c? c?c project kh?c, v? d? Class Library, h?y copy c? ch?ng
-# COPY ["ShopCo.Core/ShopCo.Core.csproj", "ShopCo.Core/"]
+# V? build context ?? l? 'ShopCoApi', c?c file n?y n?m ngay ? th? m?c g?c c?a context.
+COPY ["ShopCoApi.csproj", "."]
 
-# Ch?y restore cho project c? th?
-RUN dotnet restore "ShopCoApi/ShopCoApi.csproj"
+# Ch?y restore
+RUN dotnet restore "./ShopCoApi.csproj"
 
-# Copy to?n b? m? ngu?n c?n l?i
+# Copy to?n b? m? ngu?n (t? context 'ShopCoApi') v?o th? m?c /src trong image
 COPY . .
-
-# Build project
-WORKDIR "/src/ShopCoApi"
+WORKDIR "/src/"
 RUN dotnet build "ShopCoApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Giai ?o?n 2: Publish ?ng d?ng
