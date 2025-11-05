@@ -1,0 +1,64 @@
+# T?n c?a workflow, s? hi?n th? tr?n tab Actions c?a GitHub
+name: Build, Push, and Deploy to OnRender
+
+# Quy ??nh khi n?o workflow n?y s? ch?y
+on:
+  push:
+    branches:
+      - master # Ch?y m?i khi c? commit m?i ???c ??y l?n branch 'main'
+
+# C?c bi?n m?i tr??ng d?ng chung cho t?t c? c?c job
+env:
+  REGISTRY: ghcr.io # S? d?ng GitHub Container Registry
+  IMAGE_NAME: ${{ github.repository }} # T?n image s? l? ten-user/ten-repo
+
+jobs:
+  # Job 1: Build v? Push image
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest # Ch?y tr?n m?t m?y ?o Linux c?a GitHub
+    permissions:
+      contents: read
+      packages: write # C?p quy?n ?? ghi (push) package/image
+
+    steps:
+      # B??c 1: T?i m? ngu?n v? m?y ?o
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # B??c 2: ??ng nh?p v?o GitHub Container Registry
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }} # D?ng token t? ??ng, an to?n
+
+      # B??c 3: Tr?ch xu?t metadata cho image (nh? tag, label)
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # B??c 4: Build image t? Dockerfile v? push l?n Registry
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: . # Th? m?c g?c c?a repo
+          # Quan tr?ng: Ch? ??nh ??ng ???ng d?n ??n Dockerfile c?a b?n
+          file: ./ShopCoApi/Dockerfile 
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  # Job 2: K?ch ho?t Deploy tr?n OnRender
+  trigger-deploy:
+    name: Trigger OnRender Deploy
+    needs: build-and-push # Ph?i ch?y SAU KHI job 'build-and-push' th?nh c?ng
+    runs-on: ubuntu-latest
+
+    steps:
+      # B??c 1: G?i ??n Deploy Hook ?? l?u trong Secrets
+      - name: Call OnRender Deploy Hook
+        run: curl -X POST ${{ secrets.ONRENDER_DEPLOY_HOOK_URL }}
